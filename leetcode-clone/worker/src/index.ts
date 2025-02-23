@@ -20,7 +20,11 @@ async function startWorker() {
     while (true) {
       try {
         const submission = await client.brPop("submissions", 0);
-        await processSubmission(submission.element);
+        if (submission && submission.element) {
+          await processSubmission(submission.element);
+        } else {
+          console.warn("Received empty submission");
+        }
       } catch (error) {
         console.error("Error processing submission:", error);
       }
